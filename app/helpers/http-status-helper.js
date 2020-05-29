@@ -1,7 +1,7 @@
-export const successMessage = { status: 'success', data: {}, message: "" };
-export const errorMessage = { status: "error", data: {}, message: "" };
+const successMessage = { status: 'success', data: {}, message: "" };
+const errorMessage = { status: "error", data: {}, message: "" };
 
-export const HttpStatus = {
+const httpStatus = {
     ok: 200,
     error: 500,
     notFound: 404,
@@ -9,3 +9,4 @@ export const HttpStatus = {
     created: 201,
     unauthorized: 401
 };
+module.exports = { successMessage, errorMessage, httpStatus }

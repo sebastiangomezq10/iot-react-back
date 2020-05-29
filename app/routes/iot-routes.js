@@ -1,9 +1,14 @@
-// expres nos va a ayudar a maejar la rutas 
-import express from "express";
-import {peticion} from "../controllers/iot-controller"
+// express nos va a ayudar a maejar la rutas 
+const { Router } = require('express')
+const router = Router()
+//const express = require('express');
+//import {getDisps} from "../controllers/iot-controller"
+const {getDisps, prueba, addDisp, newState,getDispsOn} = require('../controllers/iot-controller')
+//const router = express.Router();
 
-const router = express.Router();
-
-router.post('iot/peticion',peticion)
-
-export default router;
+router.get('/iot/dispositivos',getDisps);
+router.get('/iot/dispositivos/on',getDispsOn);
+router.post('/iot/addDisp',addDisp);
+router.post('/iot/newState',newState);
+router.get('/prueba',prueba);
+module.exports= router
