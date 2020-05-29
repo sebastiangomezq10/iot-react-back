@@ -26,7 +26,6 @@ const getDisps = async (request, response) => {
     return response.status(httpStatus.ok).send(successMessage);
 }
 const getDispsOn = async (request, response) => {
-
     const getDispsQuery = `        
     SELECT d.id_dispositivo, descripcion , 
     (SELECT estado FROM estado_disp as e WHERE d.id_dispositivo = e.id_dispositivo ORDER BY fecha_estado DESC LIMIT 1) as estado
@@ -44,6 +43,34 @@ const getDispsOn = async (request, response) => {
     for (let row in rows) {
 //        console.log(rows[row].estado);
         if (rows[row].estado== "encendido") {            
+            dispositivosData.push({
+                id_dispositivo: rows[row].id_dispositivo,
+                descripcion: rows[row].descripcion,
+                estado: rows[row].estado
+            });
+        }        
+    }    
+    successMessage.data = dispositivosData;
+    return response.status(httpStatus.ok).send(successMessage);
+}
+
+const getDispsOff = async (request, response) => {
+    const getDispsQuery = `        
+    SELECT d.id_dispositivo, descripcion , 
+    (SELECT estado FROM estado_disp as e WHERE d.id_dispositivo = e.id_dispositivo ORDER BY fecha_estado DESC LIMIT 1) as estado
+    FROM dispositivo as d;
+    `;
+
+    const { rows } = await dbQuery(getDispsQuery);
+
+    if (!rows) {
+        errorMessage.error = 'Error getting disps';
+        return response.status(httpStatus.bad).send(errorMessage);
+    }    
+
+    const dispositivosData = [];
+    for (let row in rows) {
+        if (rows[row].estado== "apagado") {            
             dispositivosData.push({
                 id_dispositivo: rows[row].id_dispositivo,
                 descripcion: rows[row].descripcion,
@@ -126,5 +153,6 @@ module.exports = {
     prueba,
     addDisp,
     newState,
-    getDispsOn
+    getDispsOn,
+    getDispsOff
 }
